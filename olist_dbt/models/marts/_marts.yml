@@ -2,12 +2,7 @@ version: 2
 
 models:
 
-  - name: int_orders_enriched
-    columns:
-      - name: order_id
-        tests: [not_null, unique]
-
-  - name: int_customer_orders
+  - name: mart_customer_churn_features
     columns:
       - name: customer_unique_id
         tests: [not_null, unique]
@@ -18,7 +13,14 @@ models:
               arguments:
                 values: [0, 1]
 
-  - name: int_seller_performance
+  - name: mart_seller_risk
     columns:
       - name: seller_id
         tests: [not_null, unique]
+
+  - name: mart_sales_overview
+    columns:
+      - name: order_month
+        tests: [not_null]
+
+  - name: mart_delivery_performance
