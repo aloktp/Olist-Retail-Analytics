@@ -47,18 +47,38 @@ customers as (
 
 -- ============================================================
 -- 3) ATTACH CUSTOMER UNIQUE ID TO EACH ORDER
---    This step ensures all orders belonging to the same person
---    are grouped correctly in the final customer-level table.
+--    - In Olist, customer_id is NOT stable (same person can appear multiple times)
+--    - customer_unique_id is the true person-level identifier
+--    - Some orders may have duplicate customer_id mappings due to data quirks
+--    - So, we Join orders to customers to bring in customer_unique_id
+--    - Use row_number() to ensure ONE row per order_id after the join
 -- ============================================================
 
 orders_with_unique_id as (
-    select
-        c.customer_unique_id,
-        c.customer_state,
-        o.*
-    from orders o
-    left join customers c
-        on o.customer_id = c.customer_id
+
+    select *
+    from (
+        select
+            -- Bring in the stable customer identifier
+            c.customer_unique_id,
+            c.customer_state,
+
+            -- Bring all order-level fields
+            o.*,
+
+            -- Deduplicate in case the join produces multiple matches
+            row_number() over (
+                partition by o.order_id
+                order by c.customer_unique_id
+            ) as rn
+
+        from orders o
+        left join customers c
+            on o.customer_id = c.customer_id
+    )
+
+    -- Keep only the first match per order_id
+    where rn = 1
 ),
 
 -- ============================================================
