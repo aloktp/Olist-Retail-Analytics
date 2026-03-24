@@ -5,7 +5,9 @@ models:
   - name: mart_customer_churn_features
     columns:
       - name: customer_unique_id
-        tests: [not_null, unique]
+        tests:
+          - not_null
+          - unique
 
       - name: is_churned
         tests:
@@ -16,11 +18,14 @@ models:
   - name: mart_seller_risk
     columns:
       - name: seller_id
-        tests: [not_null, unique]
+        tests:
+          - not_null
+          - unique
 
   - name: mart_sales_overview
     columns:
       - name: order_month
-        tests: [not_null]
+        tests:
+          - not_null
 
   - name: mart_delivery_performance

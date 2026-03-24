@@ -10,29 +10,63 @@ sources:
       - name: orders
         columns:
           - name: order_id
-            tests: [not_null, unique]
+            tests:
+              - not_null
+              - unique
 
           - name: customer_id
-            tests: [not_null]
+            tests:
+              - not_null
 
       - name: customers
         columns:
           - name: customer_id
-            tests: [not_null, unique]
+            tests:
+              - not_null
+              - unique
 
       - name: order_items
+        columns:
+          - name: order_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('bronze', 'orders')
+                    field: order_id
+
+          - name: order_item_id
+            tests:
+              - not_null
 
       - name: order_payments
+        columns:
+          - name: order_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('bronze', 'orders')
+                    field: order_id
 
+          - name: payment_sequential
+            tests:
+              - not_null
+
+      # RAW reviews dataset is dirty i.e. has null Primary Key and broken Foreign Key.
+      # dbt not_null and unique tests will fail. 
+      # but reviews data is not that important for this project. Hence, no tests are added.
       - name: order_reviews
 
       - name: sellers
         columns:
           - name: seller_id
-            tests: [not_null, unique]
+            tests:
+              - not_null
+              - unique
 
-      - name: products   
-      
+      - name: products
+
       - name: geolocation
-      
+
       - name: category_translation

@@ -91,14 +91,21 @@ orders_with_unique_id as (
 --      - satisfaction
 --      - recency (for churn calculation)
 --      - churn flag (for churn logic)
+
+-- 	  FIX for duplicate rows because of duplicate customer ids having different "State" where customer lives in, after customers was joined with orders:
+--    - i.e. Customers previously lived in one state, and later lived in another state, and updated data in their Olist profile.
+--    - Ensure ONE row per customer_unique_id
+--    - Handle multiple states per customer correctly
 -- ============================================================
 
 customer_agg as (
 
     select
         customer_unique_id,
-        customer_state,
 
+        -- FIX: take state from most recent order (logical + consistent)
+        max_by(customer_state, order_purchased_at) as customer_state,
+		
         -- -------------------------
         -- ORDER BEHAVIOUR METRICS
         -- -------------------------
@@ -147,7 +154,8 @@ customer_agg as (
         end as is_churned
 
     from orders_with_unique_id
-    group by customer_unique_id, customer_state
+    -- CRITICAL FIX is group by customer unique id only rather than customer unique id and customer state :-
+    group by customer_unique_id
 )
 
 select * from customer_agg;

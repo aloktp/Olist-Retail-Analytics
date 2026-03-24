@@ -5,12 +5,16 @@ models:
   - name: int_orders_enriched
     columns:
       - name: order_id
-        tests: [not_null, unique]
+        tests:
+          - not_null
+          - unique
 
   - name: int_customer_orders
     columns:
       - name: customer_unique_id
-        tests: [not_null, unique]
+        tests:
+          - not_null
+          - unique
 
       - name: is_churned
         tests:
@@ -21,4 +25,6 @@ models:
   - name: int_seller_performance
     columns:
       - name: seller_id
-        tests: [not_null, unique]
+        tests:
+          - not_null
+          - unique

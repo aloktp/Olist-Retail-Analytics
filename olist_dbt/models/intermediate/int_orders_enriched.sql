@@ -1,61 +1,64 @@
--- CTE 1: Filter only delivered orders
--- We start with orders because this is the main thing in the final gold dataset.
+-- ============================================================
+-- PURPOSE:
+-- Order-level dataset combining:
+-- - orders
+-- - items (1-to-many)
+-- - payments (1-to-many)
+-- - reviews (1-to-many)
+--
+-- Handles:
+-- - aggregation of 1-to-many relationships
+-- - deduplication of reviews using window function
+-- ============================================================
+
 with orders as (
 
     select *
     from {{ ref('stg_orders') }}
-    where is_delivered = 1   -- keep only completed orders
+    where is_delivered = 1
 
 ),
 
--- CTE 2: Aggregate order items
--- Each order can have multiple items → we summarize them at order_id level.
+-- ============================================================
+-- Aggregate order items
+-- (order_id, order_item_id) → aggregated to order level
+-- ============================================================
+
 items as (
 
     select
         order_id,
-
-        -- number of items in the order
         count(order_item_id) as item_count,
-
-        -- sum of product prices
         sum(item_price) as items_subtotal,
-
-        -- total freight charged
         sum(freight_value) as freight_total,
-
-        -- total gross value (items + freight)
         sum(item_total_value) as order_gross_value,
-
-        -- pick one seller (most orders have 1 seller)
         min(seller_id) as primary_seller_id
 
     from {{ ref('stg_order_items') }}
     group by order_id
 ),
 
--- CTE 3: Aggregate payments
--- Orders can have multiple payments (e.g., split payments).
+-- ============================================================
+-- Aggregate payments
+-- (order_id, payment_sequential) → aggregated to order level
+-- ============================================================
+
 payments as (
 
     select
         order_id,
-
-        -- total amount paid
         sum(payment_value) as total_payment_value,
-
-        -- number of distinct payment methods used
         count(distinct payment_type) as payment_method_count,
-
-        -- highest number of installments used
         max(payment_installments) as max_installments
 
     from {{ ref('stg_order_payments') }}
     group by order_id
 ),
 
--- CTE 4: Get the latest review per order
--- Some orders have multiple reviews → we keep the most recent one.
+-- ============================================================
+-- Deduplicate reviews (keep latest per order)
+-- ============================================================
+
 reviews as (
 
     select 
@@ -64,17 +67,19 @@ reviews as (
         is_low_satisfaction
     from (
         select *,
-               -- rank reviews by recency within each order
                row_number() over (
                    partition by order_id 
                    order by review_created_at desc
                ) as rn
         from {{ ref('stg_order_reviews') }}
     )
-    where rn = 1   -- keep only the latest review
+    where rn = 1
 ),
 
--- CTE 5: Final dataset combining all features
+-- ============================================================
+-- Final dataset
+-- ============================================================
+
 final as (
 
     select
@@ -86,19 +91,16 @@ final as (
         o.estimated_delivery_at,
 
         -- DELIVERY METRICS
-        -- difference between actual and estimated delivery
         datediff(o.delivered_at, o.estimated_delivery_at) as delivery_delay_days,
 
-        -- flag if delivery was late
         case 
             when o.delivered_at > o.estimated_delivery_at then 1 
             else 0 
         end as is_late_delivery,
 
-        -- total days from purchase to delivery
         datediff(o.delivered_at, o.order_purchased_at) as total_delivery_days,
 
-        -- ORDER VALUE METRICS
+        -- VALUE METRICS
         i.item_count,
         i.order_gross_value,
         p.total_payment_value,
@@ -116,6 +118,5 @@ final as (
     left join reviews r on o.order_id = r.order_id
 )
 
--- Final output
 select * 
-from final;
+from final
