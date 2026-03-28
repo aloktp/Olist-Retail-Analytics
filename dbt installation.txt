@@ -1,0 +1,35 @@
+# In Command Prompt in laptop :-
+
+pip install dbt-databricks
+
+# Check if dbt installed
+
+dbt --version
+
+# Create DBT Project
+
+dbt init olist_dbt
+
+/* Go to Databricks UI in site. Go to Compute. Click Serverless Starter Warehouse. Get the Server Hostname and HTTP Path.
+
+Got to Settings in Databricks UI. In User heading, click Developer, click Manage Access token, give comment "dbt connection".
+Choose Scope "Other APIs". For API scope, Select All APIs. 
+
+Then Generate new token. Give token in command prompt.
+
+Choose use Unity Catalog
+
+Give :-
+
+Catalog: workspace
+schema: bronze
+threads: 4
+*/
+
+# Check if olist_dbt configuration correctly setup
+
+Do "cd olist_dbt" to get inside the folder.
+
+Run "dbt debug" in command prompt. If error, you can edit the C:\Users\<your-username>\.dbt\profiles.yml file directly for example, you gave wrong access token.
+
+If all checks passed, then you can do "dbt run" command to create sample model.
