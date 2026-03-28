@@ -1,31 +1,51 @@
-# 🛒 Olist E-Commerce Analytics & Churn Prediction (End-to-End Data Project)
+# Olist E-Commerce Analytics & Churn Prediction (End-to-End Data Project)
 
 ---
 
-## Case Study
+## Case Study — What Are We Trying to Answer?
 
 How can an e-commerce platform:
 
-- Understand business performance over time?
+- Track business growth and customer behaviour?
 - Identify operational inefficiencies in delivery?
 - Detect high-risk sellers impacting customer experience?
 - Predict which customers are likely to churn — and why?
 
 ---
 
+## About the Dataset (Olist E-Commerce)
+
+This project uses the **Brazilian Olist E-Commerce dataset**, containing real-world transactional data across the full e-commerce lifecycle.
+
+- ~100,000 orders  
+- ~99,000 customers  
+- ~3,000 sellers  
+- ~100,000 reviews  
+
+### Data Coverage:
+- Orders, payments, reviews  
+- Delivery timelines  
+- Seller and product information  
+
+This enables **end-to-end analytics from operations → customer experience → churn prediction**.
+
+---
+
 ## Final Business Insight
 
-Operational inefficiencies in delivery performance — driven by a small group of high-risk sellers — lead to poor customer experience and ultimately increase customer churn.
+Delivery performance variability — driven by a small group of high-risk sellers — leads to lower customer satisfaction and significantly increases churn probability.
 
 ---
 
 ## Project Architecture
 
+![Databricks UI](screenshots/Databricks.jpg)
+
 Databricks (Bronze → Silver → Gold)
 ↓
 dbt (Data Modeling + Testing)
 ↓
-Machine Learning (Churn Prediction - XGBoost)
+Machine Learning (XGBoost Churn Model)
 ↓
 Power BI Dashboard (Business Insights)
 
@@ -33,166 +53,207 @@ Power BI Dashboard (Business Insights)
 
 ## Tech Stack
 
-- **Databricks** (PySpark, Delta Lake)
-![Business Overview](screenshots/Databricks.jpg)
-  
-- **dbt** (Data transformation & testing)
-- **Python** (XGBoost, Scikit-learn)
-- **Power BI** (Dashboarding)
-- **MLflow** (Model tracking & registry)
+- Databricks (PySpark, Delta Lake)
+- dbt (Transformation + Data Quality Testing)
+- Python (Scikit-learn, XGBoost)
+- MLflow (Model tracking & registry)
+- Power BI (Business dashboards)
 
 ---
 
-## 1. Business Overview Dashboard
+# DASHBOARDS (BUSINESS-FIRST APPROACH)
+
+---
+
+## 1️⃣ Business Overview
 
 ![Business Overview](screenshots/01_business_overview.png)
 
 ### Key Insights:
-- Revenue and order volume show consistent growth
-- Strong business expansion trend
-- Emerging fluctuations in delivery performance
+- Revenue scaled to **$15.4M+** with steady growth trend  
+- Order volume reached **96K+ transactions**  
+- Customer base expanded to **~96K unique customers**  
+- Early signs of increasing delivery variability observed  
 
 ---
 
-## 2. Delivery Performance Analysis
+## 2️⃣ Delivery Performance
 
 ![Delivery Performance](screenshots/02_delivery_performance.png)
 
 ### Key Insights:
-- Certain states exhibit significantly higher late delivery rates
-- Delivery delays strongly correlate with lower customer review scores
-- Geographic inefficiencies identified
+- **10.4% average late delivery rate** across Brazil  
+- Significant regional disparities in delivery performance  
+- Clear negative correlation between **late delivery % and review scores**  
+- Despite average early deliveries (-13 days), variability drives dissatisfaction  
 
 ---
 
-## 3. Seller Risk Analysis
+## 3️⃣ Seller Risk Analysis
 
 ![Seller Risk](screenshots/03_seller_risk.png)
 
 ### Key Insights:
-- A small group of sellers contributes disproportionately to delivery delays
-- High-risk sellers directly impact customer satisfaction
-- Targeted intervention can improve overall performance
+- Only **~1% sellers classified as high-risk**, yet drive disproportionate delays  
+- Top sellers show **50–65% late delivery rates**  
+- Strong relationship between **seller delay and customer satisfaction drop**  
+- Identifies precise targets for operational intervention  
 
 ---
 
-## 4. Customer Churn Prediction Dashboard
+## Customer Churn Prediction (ML Output)
 
 ![Churn Dashboard](screenshots/04_customer_churn.png)
 
 ### Key Insights:
-- ~81% customers identified as high churn risk
-- Strong alignment between predicted churn probability and actual churn
-- Enables proactive retention strategies
+- **~81% customers classified as high churn risk**  
+- Strong alignment between predicted churn probability and actual outcomes  
+- Enables proactive targeting of high-risk customers  
+- Clear link between delivery issues and churn likelihood  
 
 ---
 
-## Machine Learning — Churn Model
+# MACHINE LEARNING — CHURN MODEL
 
-### Models Used:
+---
+
+## Models Used
 - Logistic Regression (Baseline)
 - XGBoost (Final Model)
 
 ---
 
-### ROC Curve Comparison
+## ROC Curve
 
-![ROC Curve](screenshots/08_roc_curve.png)
+![ROC](screenshots/08_roc_curve.png)
 
-- XGBoost outperforms baseline model
-- Captures non-linear relationships effectively
-
----
-
-### Confusion Matrix (XGBoost)
-
-![Confusion Matrix](screenshots/05_confusion_matrix_xgboost.png)
-
-- Strong ability to identify churned customers
-- Some false positives acceptable for retention strategy
+- XGBoost achieved **AUC ≈ 0.73**
+- Significant improvement over baseline (0.67)
 
 ---
 
-### Churn Distribution
+## Confusion Matrix
 
-![Churn Distribution](screenshots/06_customer_churn_distribution.png)
+![Confusion](screenshots/05_confusion_matrix_xgboost.png)
 
-- Imbalanced dataset (~70% churn)
-- Justifies use of AUC over accuracy
+- Correctly identified **12,000+ churned customers**
+- Acceptable false positives aligned with retention strategy
 
 ---
 
-### Feature Importance
+## Churn Distribution
 
-![Feature Importance](screenshots/07_feature_importance_xgboost.png)
+![Distribution](screenshots/06_customer_churn_distribution.png)
+
+- Imbalanced dataset (~70% churn)  
+- AUC used as primary evaluation metric  
+
+---
+
+## Feature Importance
+
+![Importance](screenshots/07_feature_importance_xgboost.png)
 
 ### Key Drivers of Churn:
-- Delivery delays
-- Late order percentage
-- Delivery duration
-- Customer dissatisfaction signals
+- Delivery duration and delays  
+- Late order percentage  
+- Customer dissatisfaction signals  
+- Review scores  
 
 ---
 
 ## Model Insight
 
 The model is well-calibrated:
-- Predicted probabilities closely match actual churn rates
-- Indicates strong generalization, not overfitting
+
+- Predicted probabilities closely match actual churn rates  
+- Demonstrates strong generalization (not overfitting)  
+- Suitable for real-world decision-making  
 
 ---
 
-## Data Pipeline Highlights
+# DATA LINEAGE (DBT DAG)
 
-- Built multi-layer architecture (Bronze → Silver → Gold)
-- Implemented dbt tests:
+---
+
+## Full Pipeline DAG
+
+![DBT DAG](screenshots/09_dbt_lineage_graph.png)
+
+---
+
+## Data Modelling Approach
+
+- Layered architecture (Bronze → Silver → Gold)
+- Aggregations pushed to mart layer for BI consumption
+- Composite keys handled for transactional integrity
+- dbt tests implemented:
   - Null checks
-  - Uniqueness constraints
-  - Relationship validation
-- Handled:
-  - Duplicate records
-  - Composite key logic
-  - Data quality issues
+  - Uniqueness validation
+  - Relationship constraints
+- Feature engineering aligned with churn behaviour
 
 ---
 
-## Key Outputs
+# QUANTIFIED BUSINESS IMPACT (FINAL CONCLUSION)
 
-- Clean analytical data models (Gold layer)
-- Customer churn scoring table
-- Interactive Power BI dashboard
-- Machine learning model with evaluation
+This solution enables measurable business value:
 
----
-
-## Business Impact
-
-This solution enables:
-
-- Identification of operational bottlenecks
-- Seller performance monitoring
-- Customer churn prediction
-- Data-driven retention strategies
+### Operations
+- Identifies **10%+ late delivery risk zones**
+- Pinpoints **specific states and sellers causing delays**
+- Enables targeted logistics optimization  
 
 ---
 
-## How to Run
+### Seller Management
+- Detects **top 1% high-risk sellers driving majority of delays**
+- Enables **focused performance interventions**
+- Reduces operational inefficiency at source  
 
-1. Load raw data into Databricks
+---
+
+### Customer Retention
+- Flags **high-risk churn customers (~81%)**
+- Enables **proactive retention campaigns**
+- Improves customer lifetime value  
+
+---
+
+### Decision Making
+- Connects **operations → customer experience → churn**
+- Translates raw data into **actionable business insights**
+- Supports **data-driven strategy at scale**
+
+---
+
+## Final Outcome
+
+This project demonstrates how an end-to-end data pipeline can:
+
+- Transform raw transactional data into business insights  
+- Identify operational bottlenecks  
+- Predict customer behaviour  
+- Enable measurable business impact  
+
+---
+
+# HOW TO RUN
+
+1. Load raw data into Databricks  
 2. Run dbt models:
 
-dbt run
+dbt run 
+
 dbt test
 
 3. Execute ML notebook
-4. Connect Power BI to Gold tables
+4. Connect PowerBI to Gold tables
 
 ---
 
-## Author
+# AUTHOR
 
 Alok T P  
+
 ---
-
-
-
