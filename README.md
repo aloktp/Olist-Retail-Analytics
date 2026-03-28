@@ -31,12 +31,6 @@ This enables **end-to-end analytics from operations → customer experience → 
 
 ---
 
-## Final Business Insight
-
-Delivery performance variability — driven by a small group of high-risk sellers — leads to lower customer satisfaction and significantly increases churn probability.
-
----
-
 ## Project Architecture
 
 ![Databricks UI](screenshots/Databricks.jpg)
@@ -69,7 +63,7 @@ Power BI Dashboard (Business Insights)
 
 ![Business Overview](screenshots/01_business_overview.png)
 
-### Key Insights:
+### Key Observations:
 - Revenue scaled to **$15.4M+** with steady growth trend  
 - Order volume reached **96K+ transactions**  
 - Customer base expanded to **~96K unique customers**  
@@ -81,7 +75,7 @@ Power BI Dashboard (Business Insights)
 
 ![Delivery Performance](screenshots/02_delivery_performance.png)
 
-### Key Insights:
+### Key Observations:
 - **10.4% average late delivery rate** across Brazil  
 - Significant regional disparities in delivery performance  
 - Clear negative correlation between **late delivery % and review scores**  
@@ -93,7 +87,7 @@ Power BI Dashboard (Business Insights)
 
 ![Seller Risk](screenshots/03_seller_risk.png)
 
-### Key Insights:
+### Key Observations:
 - Only **~1% sellers classified as high-risk**, yet drive disproportionate delays  
 - Top sellers show **50–65% late delivery rates**  
 - Strong relationship between **seller delay and customer satisfaction drop**  
@@ -101,11 +95,11 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-## Customer Churn Prediction (ML Output)
+## 4️⃣ Customer Churn Prediction (ML Output)
 
 ![Churn Dashboard](screenshots/04_customer_churn.png)
 
-### Key Insights:
+### Key Observations:
 - **~81% customers classified as high churn risk**  
 - Strong alignment between predicted churn probability and actual outcomes  
 - Enables proactive targeting of high-risk customers  
@@ -195,7 +189,7 @@ The model is well-calibrated:
 
 ---
 
-# QUANTIFIED BUSINESS IMPACT (FINAL CONCLUSION)
+# Main Insights
 
 This solution enables measurable business value:
 
@@ -224,6 +218,23 @@ This solution enables measurable business value:
 - Connects **operations → customer experience → churn**
 - Translates raw data into **actionable business insights**
 - Supports **data-driven strategy at scale**
+
+---
+
+# WHAT THIS PROJECT SHOWS
+
+- A small subset of sellers is responsible for a large share of delivery failures  
+- Delivery delays — not average delivery time — are the real driver of poor customer experience  
+- Customers exposed to inconsistent delivery performance are significantly more likely to churn  
+
+---
+
+# WHAT SHOULD BE DONE (BUSINESS ACTIONS)
+
+- Prioritise intervention on the worst-performing sellers instead of broad optimisations  
+- Fix logistics in high-delay states (carrier changes, routing, local capacity)  
+- Use churn scores to trigger retention actions immediately after bad delivery experiences  
+- Track late delivery rate as a core business KPI linked directly to churn  
 
 ---
 
@@ -257,3 +268,9 @@ dbt test
 Alok T P  
 
 ---
+
+
+
+
+
+
