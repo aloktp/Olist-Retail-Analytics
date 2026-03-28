@@ -2,7 +2,7 @@
 
 ---
 
-## Case Study — What Are We Trying to Answer?
+## Case Study
 
 How can an e-commerce platform:
 
