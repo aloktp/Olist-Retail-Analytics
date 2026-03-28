@@ -31,9 +31,11 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 
 - **Databricks** (PySpark, Delta Lake)
+![Business Overview](screenshots/Databricks.jpg)
+  
 - **dbt** (Data transformation & testing)
 - **Python** (XGBoost, Scikit-learn)
 - **Power BI** (Dashboarding)
@@ -41,7 +43,7 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-## 📊 1. Business Overview Dashboard
+## 1. Business Overview Dashboard
 
 ![Business Overview](screenshots/01_business_overview.png)
 
@@ -52,7 +54,7 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-## 🚚 2. Delivery Performance Analysis
+## 2. Delivery Performance Analysis
 
 ![Delivery Performance](screenshots/02_delivery_performance.png)
 
@@ -63,7 +65,7 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-## ⚠️ 3. Seller Risk Analysis
+## 3. Seller Risk Analysis
 
 ![Seller Risk](screenshots/03_seller_risk.png)
 
@@ -74,7 +76,7 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-## 🔥 4. Customer Churn Prediction Dashboard
+## 4. Customer Churn Prediction Dashboard
 
 ![Churn Dashboard](screenshots/04_customer_churn.png)
 
@@ -85,7 +87,7 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-## 🤖 Machine Learning — Churn Model
+## Machine Learning — Churn Model
 
 ### Models Used:
 - Logistic Regression (Baseline)
@@ -93,7 +95,7 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-### 📈 ROC Curve Comparison
+### ROC Curve Comparison
 
 ![ROC Curve](screenshots/08_roc_curve.png)
 
@@ -102,7 +104,7 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-### 📊 Confusion Matrix (XGBoost)
+### Confusion Matrix (XGBoost)
 
 ![Confusion Matrix](screenshots/05_confusion_matrix_xgboost.png)
 
@@ -111,7 +113,7 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-### 📉 Churn Distribution
+### Churn Distribution
 
 ![Churn Distribution](screenshots/06_customer_churn_distribution.png)
 
@@ -120,7 +122,7 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-### 🔍 Feature Importance
+### Feature Importance
 
 ![Feature Importance](screenshots/07_feature_importance_xgboost.png)
 
@@ -132,7 +134,7 @@ Power BI Dashboard (Business Insights)
 
 ---
 
-## 🧠 Model Insight
+## Model Insight
 
 The model is well-calibrated:
 - Predicted probabilities closely match actual churn rates
@@ -140,7 +142,7 @@ The model is well-calibrated:
 
 ---
 
-## 🔄 Data Pipeline Highlights
+## Data Pipeline Highlights
 
 - Built multi-layer architecture (Bronze → Silver → Gold)
 - Implemented dbt tests:
@@ -154,7 +156,7 @@ The model is well-calibrated:
 
 ---
 
-## 📦 Key Outputs
+## Key Outputs
 
 - Clean analytical data models (Gold layer)
 - Customer churn scoring table
@@ -163,7 +165,7 @@ The model is well-calibrated:
 
 ---
 
-## 🚀 Business Impact
+## Business Impact
 
 This solution enables:
 
@@ -174,7 +176,7 @@ This solution enables:
 
 ---
 
-## 🧾 How to Run
+## How to Run
 
 1. Load raw data into Databricks
 2. Run dbt models:
@@ -187,7 +189,7 @@ dbt test
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 Alok T P  
 ---
