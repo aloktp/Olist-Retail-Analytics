@@ -1,4 +1,4 @@
-# Olist E-Commerce Analytics & Churn Prediction (End-to-End Data Project)
+# Olist E-Commerce Analytics & Churn Prediction
 
 ---
 
